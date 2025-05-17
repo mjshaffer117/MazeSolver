@@ -6,17 +6,24 @@ class MainWindow:
         self.height = height
         self.__root = Tk()
         self.__root.title("Maze Solver")
-        self.__canvas = Canvas(self.__root, bg="grey", height=height, width=width)
+        self.__canvas = Canvas(self.__root, bg="black", height=height, width=width)
         self.__canvas.pack(fill=BOTH, expand=1)
         self.__root.geometry(f"{width}x{height}+10+10") #POSITION WINDOW LOCATION ON SCREEN
         self.__running = False
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
+
+    def update_text(self, text, x, y):
+        self.text = text
+        self.x = x
+        self.y = y
+        font = ("Ariel", 18, "bold")
+        self.__canvas.create_text(x, y, text=text, font=font, fill="cyan")
     
     def redraw(self):
         self.__root.update_idletasks()
         self.__root.update()
 
-    def draw_line(self, line, fill_color="black"):
+    def draw_line(self, line, fill_color="white"):
         line.draw(self.__canvas, fill_color)
 
     def wait_for_close(self):
@@ -37,7 +44,7 @@ class Line:
         self.pt1 = pt1
         self.pt2 = pt2
 
-    def draw(self, canvas, fill_color="black"):
+    def draw(self, canvas, fill_color="white"):
         self.canvas = canvas
         self.fill_color = fill_color
         canvas.create_line(
