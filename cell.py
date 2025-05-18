@@ -22,15 +22,27 @@ class Cell:
         if self.has_left_wall:
             line = Line(Point(x1, y1), Point(x1, y2))
             self.__win.draw_line(line)
+        else:
+            line = Line(Point(x1, y1), Point(x1, y2))
+            self.__win.draw_line(line, "black")
         if self.has_right_wall:
             line = Line(Point(x2, y1), Point(x2, y2))
             self.__win.draw_line(line)
+        else:
+            line = Line(Point(x2, y1), Point(x2, y2))
+            self.__win.draw_line(line, "black")
         if self.has_bottom_wall:
             line = Line(Point(x1, y2), Point(x2, y2))
             self.__win.draw_line(line)
+        else:
+            line = Line(Point(x1, y2), Point(x2, y2))
+            self.__win.draw_line(line, "black")
         if self.has_top_wall:
             line = Line(Point(x1, y1), Point(x2, y1))
             self.__win.draw_line(line)
+        else:
+            line = Line(Point(x1, y1), Point(x2, y1))
+            self.__win.draw_line(line, "black")
 
     def draw_move(self, to_cell, undo=False):
         center_x1 = abs(self.x2 - self.x1) // 2 + self.x1
@@ -38,8 +50,8 @@ class Cell:
         center_x2 = abs(to_cell.x2 - to_cell.x1) // 2 + to_cell.x1
         center_y2 = abs(to_cell.y2 - to_cell.y1) // 2 + to_cell.y1
         if undo is True:
-            fill_color = "blue"
+            fill_color = "grey"
         else:
-            fill_color = "cyan" #37FD12 ("green" -> Solved)
+            fill_color = self.__win.__rand_color #37FD12 ("green" -> Solved)
         line = Line(Point(center_x1, center_y1), Point(center_x2, center_y2))
         self.__win.draw_line(line, fill_color)

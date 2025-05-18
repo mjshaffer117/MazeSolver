@@ -12,9 +12,9 @@ class Maze:
         self.cell_size_y = cell_size_y
         self.__win = win
         self.cells = []
-
-        self.__win.update_text("CREATING GRID...", 175, 25)
+        self.__win.update_text("CREATING GRID...", 160, 25)
         self.create_cells()
+        self.__break_entrance_and_exit()
 
     def create_cells(self):
         for c in range(self.cols):
@@ -35,6 +35,13 @@ class Maze:
         y2 = y1 + self.cell_size_y
         self.cells[c][r].draw(x1, y1, x2, y2)
         self.animate()
+
+    def __break_entrance_and_exit(self):
+        self.__win.update_text("CREATING MAZE...", 400, 25)
+        self.cells[0][0].has_top_wall = False
+        self.draw_cell(0, 0)
+        self.cells[self.cols - 1][self.rows - 1].has_bottom_wall = False
+        self.draw_cell(self.cols - 1, self.rows - 1)
 
     def animate(self):
         self.__win.redraw()

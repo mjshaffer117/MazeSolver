@@ -1,4 +1,5 @@
 from tkinter import Tk, BOTH, Canvas
+import random
 
 class MainWindow:
     def __init__(self, width, height):
@@ -9,6 +10,7 @@ class MainWindow:
         self.__canvas = Canvas(self.__root, bg="black", height=height, width=width)
         self.__canvas.pack(fill=BOTH, expand=1)
         self.__root.geometry(f"{width}x{height}+10+10") #POSITION WINDOW LOCATION ON SCREEN
+        self.__rand_color = random.choice(["cyan", "magenta", "yellow"])
         self.__running = False
         self.__root.protocol("WM_DELETE_WINDOW", self.close)
 
@@ -17,7 +19,7 @@ class MainWindow:
         self.x = x
         self.y = y
         font = ("Ariel", 18, "bold")
-        self.__canvas.create_text(x, y, text=text, font=font, fill="cyan")
+        self.__canvas.create_text(x, y, text=text, font=font, fill=self.__rand_color)
     
     def redraw(self):
         self.__root.update_idletasks()
