@@ -3,7 +3,7 @@ import random
 import time
 
 class Maze:
-    def __init__(self, x1, y1, rows, cols, cell_size_x, cell_size_y, win):
+    def __init__(self, x1, y1, rows, cols, cell_size_x, cell_size_y, win, seed=None):
         self.x1 = x1
         self.y1 = y1
         self.rows = rows
@@ -12,9 +12,14 @@ class Maze:
         self.cell_size_y = cell_size_y
         self.__win = win
         self.cells = []
+        if seed:
+            random.seed(seed)
         self.__win.update_text("CREATING GRID...", 160, 25)
         self.create_cells()
         self.__break_entrance_and_exit()
+        self.__win.update_text("CREATING MAZE...", 400, 25)
+        self.__break_walls_r(0, 0)
+        self.__win.update_text("SOLVING...", 600, 25)
 
     def create_cells(self):
         for c in range(self.cols):
@@ -37,11 +42,44 @@ class Maze:
         self.animate()
 
     def __break_entrance_and_exit(self):
-        self.__win.update_text("CREATING MAZE...", 400, 25)
         self.cells[0][0].has_top_wall = False
         self.draw_cell(0, 0)
         self.cells[self.cols - 1][self.rows - 1].has_bottom_wall = False
         self.draw_cell(self.cols - 1, self.rows - 1)
+
+    def __break_walls_r(self, i, j):
+        self.cells[i][j].visited = True
+        while True:
+            visit = []
+            if i > 0 and not self.cells[i - 1][j].visited:
+                #CAN MOVE RIGHT
+                visit.append((i - 1, j))
+            if j > 0 and not self.cells[i][j - 1].visited:
+                #CAN MOVE DOWN
+                visit.append((i, j - 1))
+            if i < self.cols - 1 and not self.cells[i + 1][j].visited:
+                #CAN MOVE LEFT
+                visit.append((i + 1, j))
+            if j < self.rows - 1 and not self.cells[i][j + 1].visited:
+                #CAN MOVE UP
+                visit.append((i, j + 1))
+            if not visit:
+                self.draw_cell(i, j)
+                return
+            next_cell = random.choice(visit)
+            if next_cell[0] == i - 1:
+                self.cells[i - 1][j].has_right_wall = False
+                self.cells[i][j].has_left_wall = False
+            elif next_cell[0] == i + 1:
+                self.cells[i + 1][j].has_left_wall = False
+                self.cells[i][j].has_right_wall = False
+            elif next_cell[1] == j - 1:
+                self.cells[i][j - 1].has_bottom_wall = False
+                self.cells[i][j].has_top_wall = False
+            elif next_cell[1] == j + 1:
+                self.cells[i][j + 1].has_top_wall = False
+                self.cells[i][j].has_bottom_wall = False
+            self.__break_walls_r(next_cell[0], next_cell[1])
 
     def animate(self):
         self.__win.redraw()
