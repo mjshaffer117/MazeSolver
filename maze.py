@@ -3,7 +3,7 @@ import random
 import time
 
 class Maze:
-    def __init__(self, x1, y1, rows, cols, cell_size_x, cell_size_y, win, seed=None):
+    def __init__(self, x1, y1, rows, cols, cell_size_x, cell_size_y, win=None, seed=None):
         self.x1 = x1
         self.y1 = y1
         self.rows = rows
@@ -14,13 +14,16 @@ class Maze:
         self.cells = []
         if seed:
             random.seed(seed)
-        self.__win.update_text("CREATING GRID...", 160, 25)
+        if self.__win is not None:
+            self.__win.update_text("CREATING GRID...", 160, 25)
         self.create_cells()
         self.__break_entrance_and_exit()
-        self.__win.update_text("CREATING MAZE...", 400, 25)
+        if self.__win is not None:
+            self.__win.update_text("CREATING MAZE...", 400, 25)
         self.__break_walls_r(0, 0)
         self.__reset_cells_visited()
-        self.__win.update_text("SOLVING...", 600, 25)
+        if self.__win is not None:
+            self.__win.update_text("SOLVING...", 600, 25)
 
     def create_cells(self):
         for c in range(self.cols):
@@ -142,5 +145,7 @@ class Maze:
         return self.solve_r(0, 0)
 
     def animate(self):
+        if self.__win is None:
+            return
         self.__win.redraw()
         time.sleep(0.01)
