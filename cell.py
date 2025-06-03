@@ -53,6 +53,6 @@ class Cell:
         if undo is True:
             fill_color = "grey"
         else:
-            fill_color = self.__win.__rand_color #37FD12 ("green" -> Solved)
+            fill_color = "#37FD12" #("green" -> Solved)
         line = Line(Point(center_x1, center_y1), Point(center_x2, center_y2))
         self.__win.draw_line(line, fill_color)
